@@ -1,0 +1,43 @@
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(shinyWidgets)
+library(shiny)
+library(lubridate)
+```
+
+Column {data-width=200}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+shinyWidgets::airDatepickerInput("reporting_month",
+                   label = "Reporting month",
+                   value = floor_date( Sys.Date(), unit = "months") - months(1),
+                   maxDate = floor_date( Sys.Date(), unit = "months"),
+                   minDate = ymd("2020-01-01"),
+                   view = "months", #editing what the popup calendar shows when it opens
+                   minView = "months", #making it not possible to go down to a "days" view and pick the wrong date
+                   dateFormat = "yyyy-mm"
+                   )
+
+```
+
+Column {data-width=800}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+renderText(paste(input$reporting_month, class(input$reporting_month), format.Date(input$reporting_month)))
+```
+
